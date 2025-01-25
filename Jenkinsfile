@@ -4,14 +4,14 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build('my-app')
+                    docker.build('my-app:latest')
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    docker.image('my-app').inside {
+                    docker.image('my-app:latest').inside {
                         sh 'npm test'
                     }
                 }
@@ -20,7 +20,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    docker.image('my-app').push('my-app:latest')
                     sh 'kubectl apply -f k8s/deployment.yaml'
                 }
             }
